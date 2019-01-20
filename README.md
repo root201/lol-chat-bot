@@ -1,5 +1,11 @@
 # LOL Chat Bot
 
+## Getting Started
+- add line friend by QR Code
+  - https://line.me/R/ti/p/%40bvk2598h
+- add line friend by id
+  - @bvk2598h
+
 ## Version 1.0.0 (Released)
 - add hash
   - `@나가` : you can kick out lol-chat-bot
