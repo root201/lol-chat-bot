@@ -23,7 +23,7 @@ router.post('/webhook', function(req, res) {
           break;
         case '롤중독자':
           lolApi.getByNickname(args[0])
-            .then(data => writer.write(hash, data))
+            .then(data => writer.writeLOLAddictionCheck(data))
             .then(message => {
               if (message) {
                 lineApi.reply(replyToken, [

@@ -32,13 +32,15 @@ const lineApi = {
           messages
         }
       }))
-      .then(axios)
-      .then(function() {
-        console.log(`[[ SEND REPLY - ${replyToken} ]]`)
+      .then(request => {
+        axios(request)
+          .then(function() {
+            console.log(`[[ SEND REPLY - ${replyToken} ]]`)
+          })
+          .catch(function() {
+            console.log('[[ REPLY ERROR ]]')
+          });
       })
-      .catch(function() {
-        console.log('[[ REPLY ERROR ]]')
-      });
   },
   leaveRoom: function(roomId) {
     channelAccessToken.get()
@@ -49,13 +51,15 @@ const lineApi = {
           'Authorization' : 'Bearer ' + token
         }
       }))
-      .then(axios)
-      .then(function() {
-        console.log(`[[ LEAVE ROOM - ${roomId} ]]`);
+      .then(request => {
+        axios(request)
+          .then(function() {
+            console.log(`[[ LEAVE ROOM - ${roomId} ]]`);
+          })
+          .catch(function() {
+            console.log('[[ LEAVE ROOM ERROR ]]');
+          });
       })
-      .catch(function() {
-        console.log('[[ LEAVE ROOM ERROR ]]');
-      });
   }
 };
 

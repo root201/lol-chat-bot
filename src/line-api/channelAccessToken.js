@@ -15,7 +15,7 @@ const channelAccessToken = {
     token: LINE_TOKEN,
     expires_in: LINE_TOKEN_EXPIRES_IN,
     get: async function() {
-        const isExpired = Math.floor(Date.now() / 1000) > this.expires_in;
+        const isExpired = Math.floor(Date.now() / 1000) >= this.expires_in;
 
         if (!this.token && isExpired) {
             await this.request();
@@ -24,6 +24,7 @@ const channelAccessToken = {
         return this.token;
     },
     request: async function() {
+        console.log('request channel access token');
         try {
             let response = await axios({
                 method: 'post',
@@ -40,11 +41,12 @@ const channelAccessToken = {
             let { data, status } = response;
 
             if (status === 200) {
+                console.log('have been invoked channel access token');
                 this.token = data.access_token;
                 this.expires_in = data.expires_in;
 
                 const json = _.assign({}, secretConfig, {
-                    LINE_TOKEN: this.access_token,
+                    LINE_TOKEN: this.token,
                     LINE_TOKEN_EXPIRES_IN: Math.floor(Date.now() / 1000) + this.expires_in
                 });
                 fs.writeFileSync(path.resolve(__dirname, '../../secret/config.json'), JSON.stringify(json), 'utf8');
