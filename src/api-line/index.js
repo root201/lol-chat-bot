@@ -2,23 +2,7 @@ const axios = require('axios');
 const channelAccessToken = require('./channelAccessToken');
 
 const lineApi = {
-  parseMessage: function(message) {
-    if (message[0] !== '@') {
-      return false;
-    }
-    
-    let pieces = message.split(' ');
-    let hash = pieces[0].substr(1);
-    let args = pieces.slice();
-    
-    args.shift();
-    
-    return {
-      hash,
-      args
-    };
-  },
-  reply: function(replyToken, messages) {
+  reply: function(replyToken, replies) {
     channelAccessToken.get()
       .then(token => ({
         method: 'post',
@@ -29,7 +13,7 @@ const lineApi = {
         },
         data: {
           replyToken,
-          messages
+          messages: replies
         }
       }))
       .then(request => {

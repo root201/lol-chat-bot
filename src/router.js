@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const chatbotResponse = require('./chatbotResponse.js');
+const lineApi = require('./api-line');
+const createReply = require('./create-reply');
 
 router.get('/webhook', function(req, res) {
   res.status(200).set('Content-Type', 'text/html');
@@ -7,8 +8,14 @@ router.get('/webhook', function(req, res) {
 });
 
 router.post('/webhook', function(req, res) {
-  if (req.body.events && Array.isArray(req.body.events)) {
-    req.body.events.forEach(event => chatbotResponse(event));
+  const events = req.body.events;
+
+  if (events && Array.isArray(events)) {
+    Promise.all(events.map(event => createReply(event)))
+      .then(replies => replies.filter(reply => reply !== null))
+      .then(replies => {
+        lineApi.reply(events[0].replyToken, replies);
+      });
   }
   
   res.sendStatus(200);

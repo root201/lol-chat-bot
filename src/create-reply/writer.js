@@ -1,4 +1,4 @@
-const utils = require('./utils');
+const utils = require('../utils');
 
 const writer = {
   writeLOLAddictionCheck({ nickname, status, spectator, match }) {
@@ -24,7 +24,10 @@ const writer = {
       messages.push(`· 시간 : ${utils.formatDate(recentMatch.timestamp, 'year-month-date (day) hour:min')}`)
     }
     
-    return messages.join('\n');
+    return {
+      type: 'text',
+      text: messages.join('\n')
+    }
   }
 };
 
