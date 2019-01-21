@@ -43,7 +43,12 @@ function toTwoDigit(num) {
   return str;
 }
 
+function removeWhitespace(str) {
+  return str.replace(/\s/g, '');
+}
+
 module.exports = {
   createUrlQuery,
-  formatDate
+  formatDate,
+  removeWhitespace
 }

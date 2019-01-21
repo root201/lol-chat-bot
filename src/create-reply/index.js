@@ -34,7 +34,7 @@ function parseMessageText(messageText) {
   
   args.shift();
   
-  return { hash, args };
+  return { hash, args: [ args.join(' ') ] };
 }
 
 module.exports = createReply;

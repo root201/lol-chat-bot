@@ -21,8 +21,13 @@ const lineApi = {
           .then(function() {
             console.log(`[[ SEND REPLY - ${replyToken} ]]`)
           })
-          .catch(function() {
+          .catch(function(error) {
             console.log('[[ REPLY ERROR ]]')
+            if (error.response && error.response.data.details) {
+              console.log(error.response.data.details);
+            } else {
+              console.log(error);
+            }
           });
       })
   },
