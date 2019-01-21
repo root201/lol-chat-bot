@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const lineApi = require('./api-line');
-const createReply = require('./create-reply');
+const lineApi = require('./lineApi');
+const createReply = require('./createReply');
 
 router.get('/webhook', function(req, res) {
   res.status(200).set('Content-Type', 'text/html');

@@ -1,6 +1,7 @@
-const lineApi = require('../api-line');
-const lolApi = require('../api-lol');
-const writer = require('./writer');
+const lineApi = require('../lineApi');
+const lolApi = require('../lolApi');
+const HASH = require('../constants/HASH');
+const createReply_lolAddictionCheck = require('./lolAddictionCheck');
 
 async function createReply(event) {
   if (!event.message || event.message.type !== 'text') {
@@ -11,11 +12,11 @@ async function createReply(event) {
     const { hash, args } = parseMessageText(event.message.text);
 
     switch(hash) {
-      case '나가':
+      case HASH.LEAVE_ROOM:
         await lineApi.leaveRoom(event.source.roomId);
         return null;
-      case '롤중독자':
-        return await lolApi.getByNickname(args[0]).then(data => writer.writeLOLAddictionCheck(data));
+      case HASH.LOL_ADDICTION_CHECK:
+        return await lolApi.getByNickname(args[0]).then(data => createReply_lolAddictionCheck(data));
     }
   } catch (error) {
     console.error(error);
