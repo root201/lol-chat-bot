@@ -1,7 +1,5 @@
 const router = require('express').Router();
-const lineApi = require('./line-api');
-const lolApi = require('./lol-api');
-const writer = require('./writer');
+const chatbotResponse = require('./chatbotResponse.js');
 
 router.get('/webhook', function(req, res) {
   res.status(200).set('Content-Type', 'text/html');
@@ -9,33 +7,8 @@ router.get('/webhook', function(req, res) {
 });
 
 router.post('/webhook', function(req, res) {
-  try {
-    const e = req.body.events[0];
-    const message = e.message;
-    const replyToken = e.replyToken;
-    
-    if (message && message.type === 'text') {
-      const { hash, args } = lineApi.parseMessage(message.text);
-
-      switch (hash) {
-        case '나가':
-          lineApi.leaveRoom(e.source.roomId);
-          break;
-        case '롤중독자':
-          lolApi.getByNickname(args[0])
-            .then(data => writer.writeLOLAddictionCheck(data))
-            .then(message => {
-              if (message) {
-                lineApi.reply(replyToken, [
-                  { type: 'text', text: message }
-                ])
-              }
-            });
-          break;
-      }
-    }
-  } catch (err) {
-    console.error(err);
+  if (req.body.events && Array.isArray(req.body.events)) {
+    req.body.events.forEach(event => chatbotResponse(event));
   }
   
   res.sendStatus(200);
